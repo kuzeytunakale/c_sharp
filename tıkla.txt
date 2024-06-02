@@ -1,0 +1,151 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace yükleme
+{
+    public partial class Form1 : Form
+    {
+        int b = 0;
+        int a = 0;
+        bool w = false;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            timer1.Start();
+        }
+
+        void kale()
+        {
+            if (b == 990)
+            {
+                timer1.Stop();
+                timer3.Start();
+                label2.Text = "Kurulum Yapılıyor";
+
+                try
+                {
+                    string masaustuYolu = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    string dosyaAdi = "Kuzey_Tuna_Kale.txt";
+                    string dosyaIcerigi = "Bu dosyayı ben istiyerek yükledim. Belki bir sürü daha dosya yüklemişimdir. Öğrenmek için kodu incelemelisin. Kod şu linkte 'https://github.com/kuzeytunakale/c_sharp' ";
+                    string dosyaYolu = Path.Combine(masaustuYolu, dosyaAdi);
+                    using (FileStream fs = new FileStream(dosyaYolu, FileMode.Create, FileAccess.Write))
+                    {
+                        fs.Close();
+                        File.AppendAllText(dosyaYolu, dosyaIcerigi);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hata oluştu: " + ex.Message);
+                }
+            }
+            else
+            {
+                if (b == 300)
+                {
+
+                    timer2.Interval = 2000;
+                    timer2.Start();
+                    label2.Text = "Ayarlar Güncelleniyor";
+                }
+                else
+                {
+                    if (b == 460)
+                    {
+
+                        timer2.Interval = 4000;
+                        timer2.Start();
+                        label2.Text = "Dosyalar Yükleniyor";
+                    }
+                    else
+                    {
+                        if (b == 830)
+                        {
+
+                            timer2.Interval = 1000;
+                            timer2.Start();
+                            label2.Text = "Dosyalar Yapılandırılıyor";
+                        }
+                        else
+                        {
+                            b = b + 1;
+                            progressBar1.Value = b;
+                            if (b % 10 == 0)
+                            {
+                                a = (b / 10);
+                                label1.Text = "%" + a.ToString();
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            kale();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (w == false)
+            {
+                e.Cancel = true;
+            }
+            
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            b = b + 1;
+            timer2.Stop();
+            kale();
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            progressBar1.Value = 1000;
+            label1.Text = "%" + "100";
+            timer3.Stop();
+            MessageBox.Show("İşlem bitirildi. Masa üstüne dosya eklendi. Dosya adı 'Kuzey_Tuna_Kale.txt'");
+            w = true;
+            this.Close();
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            
+        }
+    }
+}
+
